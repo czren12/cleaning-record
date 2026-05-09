@@ -1,0 +1,25 @@
+{
+  "name": "cleaning-record",
+  "version": "1.0.0",
+  "description": "家庭清洁记录应用",
+  "main": "main.js",
+  "scripts": {
+    "dev": "uni -p app",
+    "build": "uni build -p app"
+  },
+  "dependencies": {
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@dcloudio/uni-app": "3.0.0-5000720260410001",
+    "@dcloudio/uni-app-plus": "3.0.0-5000720260410001",
+    "@dcloudio/uni-components": "3.0.0-5000720260410001",
+    "@dcloudio/uni-mp-vite": "3.0.0-5000720260410001",
+    "@dcloudio/vite-plugin-uni": "3.0.0-5000720260410001",
+    "@dcloudio/uni-cli-shared": "3.0.0-5000720260410001",
+    "@dcloudio/uni-stacktracey": "3.0.0-5000720260410001",
+    "@dcloudio/types": "^3.4.8",
+    "typescript": "^5.4.5",
+    "vite": "5.2.8"
+  }
+}
