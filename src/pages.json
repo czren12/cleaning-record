@@ -1,7 +1,17 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/add/add"
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "清洁记录"
+      }
+    },
+    {
+      "path": "pages/add/add",
+      "style": {
+        "navigationBarTitleText": "添加记录"
+      }
+    }
   ],
   "globalStyle": {
     "navigationBarTitleText": "清洁记录",
@@ -17,11 +27,15 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "记录"
+        "text": "记录",
+        "iconPath": "",
+        "selectedIconPath": ""
       },
       {
         "pagePath": "pages/add/add",
-        "text": "添加"
+        "text": "添加",
+        "iconPath": "",
+        "selectedIconPath": ""
       }
     ]
   }
