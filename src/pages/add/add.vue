@@ -69,7 +69,7 @@ function handleSubmit() {
     name.value = ''
     cleanedAt.value = ''
     setTimeout(() => {
-      uni.switchTab({ url: '/pages/index/index' })
+      uni.navigateBack()
     }, 1500)
   } catch (e) {
     uni.showToast({ title: '保存失败', icon: 'none' })

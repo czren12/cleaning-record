@@ -18,25 +18,5 @@
     "navigationBarBackgroundColor": "#f8f8f8",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f8f8f8"
-  },
-  "tabBar": {
-    "color": "#999999",
-    "selectedColor": "#00c48c",
-    "borderStyle": "black",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "记录",
-        "iconPath": "",
-        "selectedIconPath": ""
-      },
-      {
-        "pagePath": "pages/add/add",
-        "text": "添加",
-        "iconPath": "",
-        "selectedIconPath": ""
-      }
-    ]
   }
 }
