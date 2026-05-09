@@ -46,7 +46,7 @@ function onTimeChange(e: any) {
   cleanedAt.value = e.detail.value
 }
 
-async function handleSubmit() {
+function handleSubmit() {
   if (!name.value.trim()) {
     uni.showToast({ title: '请输入清洁项目', icon: 'none' })
     return
@@ -64,7 +64,7 @@ async function handleSubmit() {
   }
 
   try {
-    await insertRecord(record)
+    insertRecord(record)
     uni.showToast({ title: '保存成功', icon: 'success' })
     name.value = ''
     cleanedAt.value = ''

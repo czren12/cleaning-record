@@ -39,15 +39,11 @@ function formatTime(dateStr: string): string {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
 }
 
-async function loadRecords() {
-  try {
-    if (selectedDate.value) {
-      records.value = await getRecordsByDate(selectedDate.value)
-    } else {
-      records.value = await getAllRecords()
-    }
-  } catch (e) {
-    console.error('加载记录失败', e)
+function loadRecords() {
+  if (selectedDate.value) {
+    records.value = getRecordsByDate(selectedDate.value)
+  } else {
+    records.value = getAllRecords()
   }
 }
 

@@ -1,118 +1,54 @@
-const DB_NAME = 'cleaning_record.db'
-const DB_VERSION = 1
-
-let db: SQLiteDB | null = null
-
-export function getDatabase(): SQLiteDB {
-  if (!db) {
-    db = uni.sqliteDatabase()
-  }
-  return db
-}
-
-export function initDatabase(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const database = getDatabase()
-    database.executeSql(
-      `CREATE TABLE IF NOT EXISTS cleaning_records (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        cleaned_at TEXT NOT NULL,
-        created_at TEXT NOT NULL
-      )`,
-      (res: any) => {
-        resolve()
-      },
-      (err: any) => {
-        reject(err)
-      }
-    )
-  })
-}
-
 export interface CleaningRecord {
-  id?: number
+  id: number
   name: string
   cleaned_at: string
   created_at: string
 }
 
-export function insertRecord(record: Omit<CleaningRecord, 'id'>): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const database = getDatabase()
-    database.executeSql(
-      `INSERT INTO cleaning_records (name, cleaned_at, created_at) VALUES (?, ?, ?)`,
-      [record.name, record.cleaned_at, record.created_at],
-      (res: any) => {
-        resolve()
-      },
-      (err: any) => {
-        reject(err)
-      }
-    )
-  })
+const STORAGE_KEY = 'cleaning_records'
+
+function getRecords(): CleaningRecord[] {
+  const data = uni.getStorageSync(STORAGE_KEY)
+  return data ? JSON.parse(data) : []
 }
 
-export function getAllRecords(): Promise<CleaningRecord[]> {
-  return new Promise((resolve, reject) => {
-    const database = getDatabase()
-    database.executeSql(
-      `SELECT * FROM cleaning_records ORDER BY cleaned_at DESC`,
-      [],
-      (res: any) => {
-        resolve(res.rows || [])
-      },
-      (err: any) => {
-        reject(err)
-      }
-    )
-  })
+function saveRecords(records: CleaningRecord[]): void {
+  uni.setStorageSync(STORAGE_KEY, JSON.stringify(records))
 }
 
-export function getRecordsByDate(date: string): Promise<CleaningRecord[]> {
-  return new Promise((resolve, reject) => {
-    const database = getDatabase()
-    database.executeSql(
-      `SELECT * FROM cleaning_records WHERE cleaned_at LIKE ? ORDER BY cleaned_at DESC`,
-      [`${date}%`],
-      (res: any) => {
-        resolve(res.rows || [])
-      },
-      (err: any) => {
-        reject(err)
-      }
-    )
-  })
+export function initDatabase(): void {
+  // Storage is automatically initialized
 }
 
-export function deleteRecord(id: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const database = getDatabase()
-    database.executeSql(
-      `DELETE FROM cleaning_records WHERE id = ?`,
-      [id],
-      (res: any) => {
-        resolve()
-      },
-      (err: any) => {
-        reject(err)
-      }
-    )
-  })
+export function insertRecord(record: Omit<CleaningRecord, 'id'>): void {
+  const records = getRecords()
+  const newRecord: CleaningRecord = {
+    ...record,
+    id: Date.now()
+  }
+  records.push(newRecord)
+  saveRecords(records)
 }
 
-export function clearAllRecords(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const database = getDatabase()
-    database.executeSql(
-      `DELETE FROM cleaning_records`,
-      [],
-      (res: any) => {
-        resolve()
-      },
-      (err: any) => {
-        reject(err)
-      }
+export function getAllRecords(): CleaningRecord[] {
+  return getRecords().sort((a, b) =>
+    new Date(b.cleaned_at).getTime() - new Date(a.cleaned_at).getTime()
+  )
+}
+
+export function getRecordsByDate(date: string): CleaningRecord[] {
+  return getRecords()
+    .filter(r => r.cleaned_at.startsWith(date))
+    .sort((a, b) =>
+      new Date(b.cleaned_at).getTime() - new Date(a.cleaned_at).getTime()
     )
-  })
+}
+
+export function deleteRecord(id: number): void {
+  const records = getRecords().filter(r => r.id !== id)
+  saveRecords(records)
+}
+
+export function clearAllRecords(): void {
+  saveRecords([])
 }
